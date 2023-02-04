@@ -179,7 +179,7 @@ por 2 segundos</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zJJ-Ko-Iuz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="580.91603053435108" y="74.647887323943664"/>
+            <point key="canvasLocation" x="592" y="77"/>
         </scene>
         <!--Title-->
         <scene sceneID="6zE-EA-F2p">
