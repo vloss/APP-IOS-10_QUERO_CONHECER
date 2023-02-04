@@ -10,6 +10,7 @@ import MapKit
 
 
 struct Place {
+
     let name: String
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
