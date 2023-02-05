@@ -9,6 +9,11 @@ import UIKit
 import MapKit
 
 class PlaceFinderViewController: UIViewController {
+    
+    enum placeFinderMessageType {
+        case error(String)
+        case confirmation(String)
+    }
 
     @IBOutlet weak var tfCity: UITextField!
     @IBOutlet weak var mapView: MKMapView!
@@ -16,17 +21,51 @@ class PlaceFinderViewController: UIViewController {
     @IBOutlet weak var viLoading: UIView!
     
     var place: Place!
-    
-    enum placeFinderMessageType {
-        case error(String)
-        case confirmation(String)
-    }
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(getLocation(_: )))
+        gesture.minimumPressDuration = 2.0
+        mapView.addGestureRecognizer(gesture)
 
     }
 
+    @objc func getLocation(_ gesture: UILongPressGestureRecognizer){
+        // pega o status da ação
+        if gesture.state == .began{
+            load(show: true)
+            
+            // Pega a localização x e y do longo click na view
+            let point = gesture.location(in: mapView)
+            
+            // converte os pontos x e y da tela em coordenadas no mapview
+            let cordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            
+            // Converte as coordenadas lat e lon em localizacão
+            let location = CLLocation(latitude: cordinate.latitude, longitude: cordinate.longitude)
+            
+            // Instancia classe Core Location Geocoder
+            let geoCoder = CLGeocoder()
+            
+            // Passa location com lat e lon
+            geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+
+                // por estar em uma clouser é necessário usar self
+                self.load(show: false)
+                
+                if error == nil {
+                    if !self.savePlace(with: placemarks?.first){
+                        self.showMessage(type: .error("Não foi encontrado nenhum local com esse nome"))
+                    }
+                } else {
+                    self.showMessage(type: .error("Erro Desconhecido"))
+                }
+            }
+        }
+    }
+    
+    
     @IBAction func findCity(_ sender: UIButton) {
         // Ao terminar de digitar fechar teclado
         tfCity.resignFirstResponder()

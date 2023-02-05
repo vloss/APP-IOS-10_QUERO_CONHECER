@@ -121,6 +121,7 @@ por 2 segundos</string>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="0.79769876700680276" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="1lG-LN-KEj" firstAttribute="centerY" secondItem="JRr-c1-fIl" secondAttribute="centerY" id="ZYM-oL-YQy"/>
                                             <constraint firstItem="1lG-LN-KEj" firstAttribute="centerX" secondItem="JRr-c1-fIl" secondAttribute="centerX" id="y6g-4E-QCm"/>
