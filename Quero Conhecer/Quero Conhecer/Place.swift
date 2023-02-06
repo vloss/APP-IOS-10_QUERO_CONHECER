@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 
 
-struct Place {
+struct Place: Codable {
 
     let name: String
     let latitude: CLLocationDegrees
@@ -59,3 +59,11 @@ struct Place {
         return address
     }
 }
+
+// Valida se dois objetos são iguais.
+extension Place: Equatable{
+    static func ==(lhs:Place, rhs:Place) -> Bool{
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
+
