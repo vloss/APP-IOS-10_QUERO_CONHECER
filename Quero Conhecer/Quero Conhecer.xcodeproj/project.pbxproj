@@ -17,6 +17,7 @@
 		B7376B0A298EAAA20009827B /* PlaceFinderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7376B09298EAAA20009827B /* PlaceFinderViewController.swift */; };
 		B7BD60C4298EBBB10017EA96 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD60C3298EBBB10017EA96 /* MapViewController.swift */; };
 		B7BD60C6298EDD500017EA96 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD60C5298EDD500017EA96 /* Place.swift */; };
+		B7CE72B72991C2CC00E292F3 /* PlaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE72B62991C2CC00E292F3 /* PlaceAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B7376B09298EAAA20009827B /* PlaceFinderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFinderViewController.swift; sourceTree = "<group>"; };
 		B7BD60C3298EBBB10017EA96 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		B7BD60C5298EDD500017EA96 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		B7CE72B62991C2CC00E292F3 /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				B7376AFE298DF7740009827B /* LaunchScreen.storyboard */,
 				B7376B01298DF7740009827B /* Info.plist */,
 				B7BD60C5298EDD500017EA96 /* Place.swift */,
+				B7CE72B62991C2CC00E292F3 /* PlaceAnnotation.swift */,
 			);
 			path = "Quero Conhecer";
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7CE72B72991C2CC00E292F3 /* PlaceAnnotation.swift in Sources */,
 				B7376AF8298DF7720009827B /* ViewController.swift in Sources */,
 				B7BD60C4298EBBB10017EA96 /* MapViewController.swift in Sources */,
 				B7376B08298EAA240009827B /* PlacesTableViewController.swift in Sources */,

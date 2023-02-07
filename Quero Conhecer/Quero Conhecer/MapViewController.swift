@@ -23,6 +23,7 @@ class MapViewController: UIViewController {
         
         searchBar.isHidden  = true
         viInfo.isHidden     = true
+        mapView.delegate    = self
         
         if places.count == 1 {
             title = places[0].name
@@ -38,9 +39,9 @@ class MapViewController: UIViewController {
     }
     
     func addToMap (_ place: Place){
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = place.coordinate
+        let annotation = PlaceAnnotation(coordinate: place.coordinate, type: .place)
         annotation.title = place.name
+        annotation.address = place.address
         mapView.addAnnotation(annotation)
     }
     
@@ -53,5 +54,28 @@ class MapViewController: UIViewController {
     
 
     @IBAction func showSearchBar(_ sender: UIBarButtonItem) {
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    // Usado para modificar uma annotation view
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if !(annotation is PlaceAnnotation){
+            return nil
+        }
+        
+        let type = (annotation as! PlaceAnnotation).type
+        let identifier = "\(type)"
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+        
+        if annotationView == nil {
+            annotationView = MKMarkerAnnotationView(annotation: annotationView, reuseIdentifier: identifier)
+        }
+        
+        annotationView?.annotation = annotation
+        
+        return nil
     }
 }
