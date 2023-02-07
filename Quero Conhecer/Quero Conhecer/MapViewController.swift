@@ -39,9 +39,12 @@ class MapViewController: UIViewController {
     }
     
     func addToMap (_ place: Place){
+        
         let annotation = PlaceAnnotation(coordinate: place.coordinate, type: .place)
+
         annotation.title = place.name
         annotation.address = place.address
+        
         mapView.addAnnotation(annotation)
     }
     
@@ -65,17 +68,25 @@ extension MapViewController: MKMapViewDelegate {
             return nil
         }
         
+        // Realizado cast para PlaceAnnotation pois o type só existe na classe criada.
         let type = (annotation as! PlaceAnnotation).type
         let identifier = "\(type)"
         
+        // Recupera uma annotation view para reuso - Necessário atribuir os novos valores, pois se já existe irá trazer tudo.
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         
+        // Se nil segnifica que é a primeira vez que está sendo usada
         if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: annotationView, reuseIdentifier: identifier)
+            // Criando uma annotation viewnMKMarkerAnnotationView
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
         
         annotationView?.annotation = annotation
+        annotationView?.canShowCallout = true
+        annotationView?.markerTintColor = type == .place ? UIColor(named: "AccentColor") : UIColor(named: "poi")
+        annotationView?.glyphImage = type == .place ? UIImage(named: "placeGlyph") : UIImage(named: "poiGlyph")
+        annotationView?.displayPriority = type == .place ? .required : .defaultHigh
         
-        return nil
+        return annotationView
     }
 }
