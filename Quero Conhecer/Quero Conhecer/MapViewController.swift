@@ -9,6 +9,11 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController {
+    
+    enum MapMessageType {
+        case routeError
+        case authorizationWarning
+    }
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
@@ -19,6 +24,10 @@ class MapViewController: UIViewController {
     
     var places: [Place]!
     var poi: [MKAnnotation] = []
+
+    // lazy para instanciar apenas no momento em que for utilizado o objeto
+    lazy var locationManager = CLLocationManager()
+    var btUserLocation: MKUserTrackingButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +36,7 @@ class MapViewController: UIViewController {
         mapView.mapType = .mutedStandard
         viInfo.isHidden     = true
         mapView.delegate    = self
+        locationManager.delegate = self
         
         if places.count == 1 {
             title = places[0].name
@@ -38,7 +48,44 @@ class MapViewController: UIViewController {
             addToMap(place)
         }
         
+        configureLocationButton()
+        
         showPlaces()
+        requestUserLocationAuthorization()
+    }
+    
+    func configureLocationButton(){
+        btUserLocation = MKUserTrackingButton(mapView: mapView)
+        btUserLocation.backgroundColor = .white
+        btUserLocation.frame.origin.x = 10
+        btUserLocation.frame.origin.y = 10
+        btUserLocation.layer.cornerRadius = 5
+        btUserLocation.layer.borderWidth = 1
+        btUserLocation.layer.borderColor = UIColor(named: "AccentColor")?.cgColor
+    }
+    
+    func requestUserLocationAuthorization() {
+        // Validação de
+        if CLLocationManager.locationServicesEnabled(){
+            switch CLLocationManager.authorizationStatus() {
+                // Valida se está sempre autorizado ou só no uso
+                case .authorizedAlways, .authorizedWhenInUse:
+                    // Mostrar o botão de localização no mapa
+                mapView.addSubview(btUserLocation)
+                // Sem autorização
+                case .denied:
+                    showMessage(type: .authorizationWarning)
+
+                // Ainda não solicitou nenhuma autorização
+                case .notDetermined:
+                    // requisição de autorização quando o app estiver em uso.
+                    locationManager.requestWhenInUseAuthorization()
+                case .restricted:
+                    break
+            }
+        } else {
+            // não tem
+        }
     }
     
     func addToMap (_ place: Place){
@@ -62,6 +109,35 @@ class MapViewController: UIViewController {
     @IBAction func showSearchBar(_ sender: UIBarButtonItem) {
         searchBar.resignFirstResponder()
         searchBar.isHidden = !searchBar.isHidden
+    }
+
+    func showMessage(type: MapMessageType){
+//        let title: String, message: String
+//        var hasConfirmation: Bool = false
+//
+//        switch type {
+//        case .confirmation(let name):
+//            title = "Local Encontrado"
+//            message = "Deseja adicionar \(name)?"
+//            hasConfirmation = true
+//
+//        case .error(let erroMessage):
+//            title = "Erro"
+//            message = erroMessage
+//        }
+//
+//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+//        alert.addAction(cancelAction)
+//        if hasConfirmation{
+//            let confirmationAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+//                self.delegate?.addPlace(self.place)
+//                self.dismiss(animated: true)
+//            }
+//            alert.addAction(confirmationAction)
+//        }
+//
+//        present(alert, animated: true)
     }
 }
 
@@ -132,5 +208,26 @@ extension MapViewController: UISearchBarDelegate{
             }
             self.load.stopAnimating()
         }
+    }
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+    
+    // Semrpe que o estado da autorização for alterado.
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            mapView.showsUserLocation = true
+            mapView.addSubview(btUserLocation)
+            locationManager.startUpdatingLocation()
+            
+        default:
+            break
+        }
+    }
+    
+    // sempre que usuario mudar a localização.
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(locations.last!)
     }
 }
