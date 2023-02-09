@@ -112,7 +112,42 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func showRoute(_ sender: UIButton) {
+        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            showMessage(type: .authorizationWarning)
+            return
+        }
         
+        let request = MKDirections.Request()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: selectAnnotation!.coordinate)) // define destino
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: locationManager.location!.coordinate)) // define origem
+        
+        let directions = MKDirections(request: request)
+        directions.calculate { (response, error) in
+            if error == nil {
+                if let response = response {
+                    self.mapView.removeOverlays(self.mapView.overlays)
+                    
+                    let route = response.routes.first! // devolve todas possíveis rotas em um array
+                    print("Nome: ", route.name)
+                    print("Distancia: ", route.distance)
+                    print("Duração: ", route.expectedTravelTime)
+                    print("===================================")
+                    for step in route.steps {
+                        print("Em \(step.distance) metro(s), \(step.instructions) ")
+                    }
+                    
+                    // adicionando overlays que é tudo que vai em cima do mapa.
+                    self.mapView.addOverlay(route.polyline, level: .aboveRoads)
+                    
+                    var annotations = self.mapView.annotations.filter({!($0 is PlaceAnnotation)}) // Remove tudo deixando apenas localizaão do usuario
+                    annotations.append(self.selectAnnotation!)
+                    self.mapView.showAnnotations(annotations, animated: true)
+                }
+            } else {
+                self.showMessage(type: .routeError)
+            }
+        }
+
     }
     
 
@@ -183,6 +218,16 @@ extension MapViewController: MKMapViewDelegate {
         
         selectAnnotation = (view.annotation as! PlaceAnnotation)
         showInfo()
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolyline{
+            let renderer = MKPolylineRenderer(overlay: overlay)
+            renderer.strokeColor = UIColor(named: "AccentColor")?.withAlphaComponent(0.8)
+            renderer.lineWidth = 5.0
+            return renderer
+        }
+        return MKOverlayRenderer(overlay: overlay)
     }
 }
 
