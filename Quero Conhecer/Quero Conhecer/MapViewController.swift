@@ -122,32 +122,22 @@ class MapViewController: UIViewController {
     }
 
     func showMessage(type: MapMessageType){
-//        let title: String, message: String
-//        var hasConfirmation: Bool = false
-//
-//        switch type {
-//        case .confirmation(let name):
-//            title = "Local Encontrado"
-//            message = "Deseja adicionar \(name)?"
-//            hasConfirmation = true
-//
-//        case .error(let erroMessage):
-//            title = "Erro"
-//            message = erroMessage
-//        }
-//
-//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
-//        alert.addAction(cancelAction)
-//        if hasConfirmation{
-//            let confirmationAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-//                self.delegate?.addPlace(self.place)
-//                self.dismiss(animated: true)
-//            }
-//            alert.addAction(confirmationAction)
-//        }
-//
-//        present(alert, animated: true)
+        let title = type == .authorizationWarning ? "Aviso" : "Erro"
+        let message = type == .authorizationWarning ? "Para usar os recursos de localização do app, você precisa permetir o acesso na tela de ajustes." : "Não foi possível encontrar esta rota."
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        if type == .authorizationWarning {
+            let confirmationAction = UIAlertAction(title: "Ir para Ajustes", style: .default, handler: { (action) in
+                
+                if let appSettings = URL(string: UIApplicationOpenNotificationSettingsURLString){
+                    UIApplication.shared.open(appSettings)
+                }
+            })
+            alert.addAction(confirmationAction)
+        }
+        present(alert, animated: true)
     }
 }
 
@@ -252,6 +242,12 @@ extension MapViewController: CLLocationManagerDelegate {
     
     // sempre que usuario mudar a localização.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations.last!)
+        //print(locations.last!)
+        // movimenta o mapa conforme a localização muda.
+//        if let location = locations.last {
+//            print("Velocidade: ", location.speed)
+//            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+//            mapView.setRegion(region, animated: true)
+//        }
     }
 }
