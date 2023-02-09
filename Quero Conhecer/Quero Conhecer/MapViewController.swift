@@ -15,28 +15,31 @@ class MapViewController: UIViewController {
         case authorizationWarning
     }
 
+    // MARK: Outlet
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var viInfo: UIView!
     @IBOutlet weak var lbName: UILabel!
     @IBOutlet weak var lbAddress: UILabel!
     @IBOutlet weak var load: UIActivityIndicatorView!
-    
+     
+    // MARK: Propriedades
     var places: [Place]!
     var poi: [MKAnnotation] = []
 
     // lazy para instanciar apenas no momento em que for utilizado o objeto
     lazy var locationManager = CLLocationManager()
     var btUserLocation: MKUserTrackingButton!
+    var selectAnnotation: PlaceAnnotation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.isHidden  = true
-        mapView.mapType = .mutedStandard
-        viInfo.isHidden     = true
-        mapView.delegate    = self
-        locationManager.delegate = self
+        searchBar.isHidden          = true
+        mapView.mapType             = .mutedStandard
+        viInfo.isHidden             = true
+        mapView.delegate            = self
+        locationManager.delegate    = self
         
         if places.count == 1 {
             title = places[0].name
@@ -49,7 +52,6 @@ class MapViewController: UIViewController {
         }
         
         configureLocationButton()
-        
         showPlaces()
         requestUserLocationAuthorization()
     }
@@ -67,6 +69,7 @@ class MapViewController: UIViewController {
     func requestUserLocationAuthorization() {
         // Validação de
         if CLLocationManager.locationServicesEnabled(){
+            
             switch CLLocationManager.authorizationStatus() {
                 // Valida se está sempre autorizado ou só no uso
                 case .authorizedAlways, .authorizedWhenInUse:
@@ -92,9 +95,9 @@ class MapViewController: UIViewController {
         
         let annotation = PlaceAnnotation(coordinate: place.coordinate, type: .place)
 
-        annotation.title = place.name
-        annotation.address = place.address
-        
+        annotation.title    = place.name
+        annotation.address  = place.address
+
         mapView.addAnnotation(annotation)
     }
     
@@ -102,7 +105,14 @@ class MapViewController: UIViewController {
         mapView.showAnnotations(mapView.annotations, animated: true)
     }
     
+    func showInfo(){
+        lbName.text = selectAnnotation!.title
+        lbAddress.text = selectAnnotation!.address
+        viInfo.isHidden = false
+    }
+    
     @IBAction func showRoute(_ sender: UIButton) {
+        
     }
     
 
@@ -142,6 +152,7 @@ class MapViewController: UIViewController {
 }
 
 extension MapViewController: MKMapViewDelegate {
+
     // Usado para modificar uma annotation view
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -169,6 +180,19 @@ extension MapViewController: MKMapViewDelegate {
         annotationView?.displayPriority = type == .place ? .required : .defaultHigh
         
         return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        let camera = MKMapCamera()
+        camera.centerCoordinate = view.annotation!.coordinate
+        camera.pitch = 80
+        camera.altitude = 100
+        mapView.setCamera(camera, animated: true)
+        
+        
+        selectAnnotation = (view.annotation as! PlaceAnnotation)
+        showInfo()
     }
 }
 

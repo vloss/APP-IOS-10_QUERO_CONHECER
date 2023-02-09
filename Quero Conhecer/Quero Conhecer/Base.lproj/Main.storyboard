@@ -218,29 +218,28 @@ por 2 segundos</string>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vuy-FG-oOa">
                                                 <rect key="frame" x="12" y="11.999999999999998" width="349" height="26.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" name="AccentColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qg3-1l-7Mn">
                                                 <rect key="frame" x="12" y="119.66666666666661" width="349" height="34.333333333333329"/>
                                                 <color key="tintColor" name="AccentColor"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Traçar Rota"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Traçar Uma Rota"/>
                                                 <connections>
                                                     <action selector="showRoute:" destination="EBr-Xa-JjI" eventType="touchUpInside" id="joL-ib-gqR"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Endereço" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="miO-NU-UEj">
-                                                <rect key="frame" x="12" y="38.333333333333371" width="349" height="18"/>
+                                                <rect key="frame" x="12" y="44.333333333333371" width="349" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" name="AccentColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="Vuy-FG-oOa" firstAttribute="top" secondItem="iUR-Lh-h9v" secondAttribute="top" constant="12" id="6FN-8h-DdJ"/>
-                                            <constraint firstItem="miO-NU-UEj" firstAttribute="top" secondItem="Vuy-FG-oOa" secondAttribute="bottom" id="Hjp-Ud-MAr"/>
                                             <constraint firstAttribute="trailing" secondItem="miO-NU-UEj" secondAttribute="trailing" constant="12" id="J7V-es-WzA"/>
                                             <constraint firstAttribute="height" constant="160" id="OvU-KX-MAM"/>
                                             <constraint firstItem="miO-NU-UEj" firstAttribute="leading" secondItem="iUR-Lh-h9v" secondAttribute="leading" constant="12" id="PeD-IG-NE4"/>
@@ -248,6 +247,7 @@ por 2 segundos</string>
                                             <constraint firstAttribute="trailing" secondItem="qg3-1l-7Mn" secondAttribute="trailing" constant="12" id="iEC-fh-eg5"/>
                                             <constraint firstItem="qg3-1l-7Mn" firstAttribute="leading" secondItem="iUR-Lh-h9v" secondAttribute="leading" constant="12" id="iXq-WQ-L8r"/>
                                             <constraint firstAttribute="bottom" secondItem="qg3-1l-7Mn" secondAttribute="bottom" constant="6" id="pRu-oq-VBv"/>
+                                            <constraint firstItem="miO-NU-UEj" firstAttribute="top" secondItem="Vuy-FG-oOa" secondAttribute="bottom" constant="6" id="uhI-6P-eir"/>
                                             <constraint firstAttribute="trailing" secondItem="Vuy-FG-oOa" secondAttribute="trailing" constant="12" id="whT-kS-ucH"/>
                                         </constraints>
                                     </view>
